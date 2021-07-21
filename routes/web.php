@@ -17,15 +17,19 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+$router->get('/test', function () use ($router) {
+    return "Testing Rusunawa";
+});
+
 // Pengguna
-$router->post('/pengguna/validasi', 'PasienController@validasiPengguna');
-$router->post('/pengguna/login', 'PasienController@loginPengguna');
-$router->post('/pengguna', 'PasienController@registerPengguna');
-$router->get('/pengguna/{id}', 'PasienController@getPengguna');
-$router->put('/pengguna/{id}', 'PasienController@editPengguna');
+$router->post('/pengguna/validasi', 'ExampleController@validasiPengguna');
+$router->post('/pengguna/login', 'ExampleController@loginPengguna');
+$router->post('/pengguna', 'ExampleController@registerPengguna');
+$router->get('/pengguna/{id}', 'ExampleController@getPengguna');
+$router->put('/pengguna/{id}', 'ExampleController@editPengguna');
 
 // Rusunawa
-$router->get('/rusunawa', 'PasienController@getSemuaRusunawa');
-$router->get('/rusunawa/{id}', 'PasienController@getRusunawa');
-$router->post('/rusunawa', 'PasienController@editRusunawa');
-$router->delete('/rusunawa/{id}', 'PasienController@deleteRusunawa');
+$router->get('/rusunawa', 'ExampleController@getSemuaRusunawa');
+$router->get('/rusunawa/{id}', 'ExampleController@getRusunawa');
+$router->post('/rusunawa', 'ExampleController@editRusunawa');
+$router->delete('/rusunawa/{id}', 'ExampleController@deleteRusunawa');
