@@ -20,7 +20,7 @@ class ExampleController extends Controller
     public function validasiPengguna(Request $request){
         $username   = $request->input('username');
         $result     = DB::select("SELECT * FROM pengguna WHERE username = '$username'");
-        if($result == null){
+        if($result != null){
             return response()->json([
                 'success'   => false,
                 'message'   => 'Username anda telah digunakan!',
@@ -49,16 +49,16 @@ class ExampleController extends Controller
             return response()->json([
                 'success'   => true,
                 'message'   => 'Login berhasil!',
-                'data'      => ''
+                'data'      => $result
             ], 200);
         }
     }
 
     public function registerPengguna(Request $request){
-        $nama       = $request->input('nama');
+        $nama_pengguna       = $request->input('nama_pengguna');
         $username   = $request->input('username');
         $password   = $request->input('password');
-        $result     = DB::insert("INSERT INTO pengguna VALUES ('', '$nama', '$username', '$password')");
+        $result     = DB::insert("INSERT INTO pengguna VALUES (0, '$nama_pengguna', '$username', '$password')");
         return response()->json([
             'success'   => true,
             'message'   => 'Anda berhasil register!',
@@ -76,11 +76,11 @@ class ExampleController extends Controller
     }
 
     public function editPengguna(Request $request, String $id){
-        $nama       = $request->input('nama');
+        $nama_pengguna       = $request->input('nama_pengguna');
         $username   = $request->input('username');
         $password   = $request->input('password');
         $result     = DB::update("  UPDATE pengguna 
-                                    SET nama = '$nama', 
+                                    SET nama_pengguna = '$nama_pengguna', 
                                         username = '$username', 
                                         password = '$password' 
                                     WHERE id_pengguna = '$id'");
@@ -109,6 +109,18 @@ class ExampleController extends Controller
             'data'      => $result
         ], 200);
     }
+    
+    public function getPenggunaRusunawa(Request $request, String $id){
+        $result     = DB::select("SELECT * FROM rusunawa
+JOIN pengguna_rusunawa ON rusunawa.id_rusunawa = pengguna_rusunawa.id_rusunawa
+JOIN pengguna ON pengguna_rusunawa.id_pengguna = pengguna.id_pengguna
+WHERE pengguna.id_pengguna = '$id'");
+        return response()->json([
+            'success'   => true,
+            'message'   => 'Berhasil!',
+            'data'      => $result
+        ], 200);
+    }
 
     public function insertRusunawa(Request $request){
         $nama                   = $request->input('nama');
@@ -121,14 +133,12 @@ class ExampleController extends Controller
         $kondisi_gedung         = $request->input('kondisi_gedung');
         $gambar                 = $request->input('gambar');
         $fasilitas              = $request->input('fasilitas');
+        $id_pengguna              = $request->input('id_pengguna');
 
-        $result     = DB::insert("INSERT INTO rusunawa VALUES ('', '$nama', '$lokasi', 
-                                '$luas_bangunan', '$luas_tanah', '$kuota',
-                                '$penghuni', '$jangka_pemeliharaan', '$kondisi_gedung', '$gambar')");
+        $result     = DB::insert("INSERT INTO rusunawa VALUES (0, '$nama', '$lokasi', '$luas_bangunan', '$luas_tanah', '$kuota',
+            '$penghuni', '$jangka_pemeliharaan', '$kondisi_gedung', '$gambar', NULL)");
 
-        foreach($fasilitas as $perFasilitas){
-
-        }
+        DB::insert("INSERT INTO pengguna_rusunawa SET id_pengguna = '$id_pengguna', id_rusunawa = (SELECT id_rusunawa FROM rusunawa ORDER BY created_at DESC LIMIT 1);");
 
         return response()->json([
             'success'   => true,
