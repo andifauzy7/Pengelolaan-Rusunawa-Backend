@@ -184,6 +184,7 @@ WHERE pengguna.id_pengguna = '$id'");
     }
 
     public function deleteRusunawa(Request $request, String $id){
+        $result     = DB::delete("DELETE FROM pengguna_rusunawa WHERE id_rusunawa = '$id'");
         $result     = DB::delete("DELETE FROM rusunawa WHERE id_rusunawa = '$id'");
         return response()->json([
             'success'   => true,
