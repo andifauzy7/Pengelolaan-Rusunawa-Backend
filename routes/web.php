@@ -29,9 +29,10 @@ $router->get('/pengguna/{id}', 'ExampleController@getPengguna');
 $router->put('/pengguna/{id}', 'ExampleController@editPengguna');
 
 // Rusunawa
+$router->get('/rusunawa/pengguna/info/{id}', 'ExampleController@getInfoRusunawa');
 $router->get('/rusunawa/all', 'ExampleController@getSemuaRusunawa');
 $router->get('/rusunawa/pengguna/{id}','ExampleController@getPenggunaRusunawa');
 $router->get('/rusunawa/{id}', 'ExampleController@getRusunawa');
 $router->post('/rusunawa/insert', 'ExampleController@insertRusunawa');
-$router->put('/rusunawa/{id}', 'ExampleController@editRusunawa');
+$router->put('/rusunawa/edit/{id}', 'ExampleController@editRusunawa');
 $router->delete('/rusunawa/{id}', 'ExampleController@deleteRusunawa');
